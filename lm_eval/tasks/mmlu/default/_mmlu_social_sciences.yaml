@@ -3,7 +3,8 @@ group_alias: social sciences
 task:
   - mmlu_social_sciences_tasks
 aggregate_metric_list:
-  - metric: acc
+  - metric: exact_match
     weight_by_size: True
+    filter_list: cons@4
 metadata:
   version: 2

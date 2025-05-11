@@ -1,0 +1,36 @@
+tag:
+  - math_word_problems
+task: aime24
+dataset_path: HuggingFaceH4/aime_2024
+test_split: train
+output_type: generate_until
+doc_to_text: "Please reason step by step, and put your final answer within \\boxed{}\n\n{{problem}}<think>\n"
+doc_to_target: "{{answer}}"
+filter_list:
+  - name: "cons@k"
+    filter:
+      - function: "take_first_k"
+        k: 64
+      - function: "regex"
+        regex_pattern: "\\\\boxed{(\\d+)}"
+        group_select: -1  # pick last if multi match, avoid picking intermediate results
+      - function: "majority_vote"  # cons@k, pass@k can only be evaluated outside of lm_eval
+      - function: "take_first"
+generation_kwargs:
+  until:
+    - "</s>"
+  do_sample: true
+  temperature: 0.6
+  top_p: 0.95
+repeats: 64
+num_fewshot: 0
+metric_list:
+  - metric: exact_match
+    aggregation: mean
+    higher_is_better: true
+    ignore_case: true
+    ignore_punctuation: true
+metadata:
+  version: 1.0
+dataset_kwargs:
+  trust_remote_code: true

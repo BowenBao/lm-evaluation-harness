@@ -3,7 +3,8 @@ group_alias: other
 task:
   - mmlu_other_tasks
 aggregate_metric_list:
-  - metric: acc
+  - metric: exact_match
     weight_by_size: True
+    filter_list: cons@4
 metadata:
   version: 2
