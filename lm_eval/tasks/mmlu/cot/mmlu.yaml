@@ -1,0 +1,6 @@
+group: mmlu_cot
+task:
+- mmlu_cot_stem
+- mmlu_cot_other
+- mmlu_cot_social_sciences
+- mmlu_cot_humanities
