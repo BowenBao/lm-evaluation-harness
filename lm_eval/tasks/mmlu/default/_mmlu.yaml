@@ -7,6 +7,6 @@ task:
 aggregate_metric_list:
   - metric: exact_match
     weight_by_size: True
-    filter_list: cons@4
+    filter_list: cons@k
 metadata:
   version: 2

@@ -7,10 +7,10 @@ output_type: generate_until
 doc_to_text: "Q: {{question.strip()}}\n(A) {{choices[0]}} (B) {{choices[1]}} (C) {{choices[2]}} (D) {{choices[3]}}\nPlease reason step by step, and put your final answer within \\boxed{}.\n<think>\n"
 doc_to_target: "{{['(A)', '(B)', '(C)', '(D)'][answer]}}"
 filter_list:
-  - name: "cons@4"
+  - name: "cons@k"
     filter:
       - function: "take_first_k"
-        k: 4
+        k: 1
       - function: "multi_choice_regex"
         group_select: -1
         ignore_case: true
@@ -26,7 +26,7 @@ generation_kwargs:
   do_sample: true
   temperature: 0.6
   top_p: 0.95
-repeats: 4
+repeats: 1
 num_fewshot: 0
 metric_list:
   - metric: exact_match
