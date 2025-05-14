@@ -5,8 +5,7 @@ task:
   - mmlu_social_sciences
   - mmlu_humanities
 aggregate_metric_list:
-  - metric: exact_match
+  - metric: acc
     weight_by_size: True
-    filter_list: cons@k
 metadata:
   version: 2

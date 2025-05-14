@@ -4,3 +4,8 @@ task:
 - mmlu_cot_other
 - mmlu_cot_social_sciences
 - mmlu_cot_humanities
+aggregate_metric_list:
+  - metric: exact_match
+    weight_by_size: True
+  - metric: accept_uncertain
+    weight_by_size: True
