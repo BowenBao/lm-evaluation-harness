@@ -13,7 +13,15 @@ def process_results(doc: dict, results: List[str], lm_eval_result=None) -> Dict[
     #     candidates = candidates.split("</think>")[-1]
 
     # Strict exact match in box.
-    # NOTE: potential false positive when model output multiple choices.
+    box_matches = re.findall(
+        r"\\boxed{\(*([A-D])\)*}",
+        candidates,
+    )
+    box_matches = [match for match in box_matches if match]
+    last_boxed_match = box_matches[-1] if box_matches else None
+    exact_match = int(last_boxed_match == target)
+
+    # flexible match
     box_matches = re.findall(
         "|".join(
             [
@@ -31,26 +39,24 @@ def process_results(doc: dict, results: List[str], lm_eval_result=None) -> Dict[
     )
     box_matches = [m for match in box_matches for m in match if m]
     last_boxed_match = box_matches[-1] if box_matches else None
+    flexible_match = int(last_boxed_match == target)
 
-    exact_match = int(last_boxed_match == target)
-    accept_uncertain = exact_match
-
+    best_possible = flexible_match
     if (last_boxed_match not in ["A", "B", "C", "D"]) or (not exact_match and lm_eval_result == target):
-        print("--------------------")
-        print(f"Subject: {doc['subject']}")
-        print(f"Question: {doc['question']}")
-        print(f"Choices: {doc['choices']}")
-        print(f"Response: {results[0]}")
-        print(f"box_matches: {box_matches}, last_boxed_match: {last_boxed_match}, target: {target}")
-        print(f"lm_eval_result: {lm_eval_result}")
-        print(f"exact_match: {exact_match}")
-        # NOTE: Needs human intervention or llm as judge.
-        accept_uncertain = 1
-
-    # flexible match.
+        # print("--------------------")
+        # print(f"Subject: {doc['subject']}")
+        # print(f"Question: {doc['question']}")
+        # print(f"Choices: {doc['choices']}")
+        # print(f"Response: {results[0]}")
+        # print(f"box_matches: {box_matches}, last_boxed_match: {last_boxed_match}, target: {target}")
+        # print(f"lm_eval_result: {lm_eval_result}")
+        # print(f"exact_match: {exact_match}")
+        # Needs human intervention or llm as judge.
+        best_possible = 1
 
     results = {
         "exact_match": exact_match,
-        "accept_uncertain": accept_uncertain,
+        "flexible_match": flexible_match,
+        "best_possible": best_possible,
     }
     return results

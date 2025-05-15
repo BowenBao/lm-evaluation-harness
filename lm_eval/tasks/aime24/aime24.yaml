@@ -7,16 +7,11 @@ output_type: generate_until
 doc_to_text: "Please reason step by step, and put your final answer within \\boxed{}\n\n{{problem}}<think>\n"
 doc_to_target: "{{answer}}"
 process_results: !function utils.process_results
-# filter_list:
-#   - name: "cons@k"
-#     filter:
-#       - function: "take_first_k"
-#         k: 1
-#       - function: "regex"
-#         regex_pattern: "\\\\boxed{(\\d+)}"
-#         group_select: -1  # pick last if multi match, avoid picking intermediate results
-#       - function: "majority_vote"  # cons@k, pass@k can only be evaluated outside of lm_eval
-#       - function: "take_first"
+filter_list:
+    - name: "repeat_k"
+      filter:
+        - function: "take_first_k"
+          k: 4
 generation_kwargs:
   until:
     - "</s>"
@@ -31,7 +26,7 @@ metric_list:
     higher_is_better: true
     ignore_case: true
     ignore_punctuation: true
-  - metric: cons@4
+  - metric: cons@k
     aggregation: mean
     higher_is_better: true
     ignore_case: true

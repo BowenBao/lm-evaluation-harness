@@ -17,7 +17,12 @@ metric_list:
     higher_is_better: true
     ignore_case: true
     ignore_punctuation: true
-  - metric: accept_uncertain
+  - metric: flexible_match
+    aggregation: mean
+    higher_is_better: true
+    ignore_case: true
+    ignore_punctuation: true
+  - metric: best_possible
     aggregation: mean
     higher_is_better: true
     ignore_case: true

@@ -7,5 +7,7 @@ task:
 aggregate_metric_list:
   - metric: exact_match
     weight_by_size: True
-  - metric: accept_uncertain
+  - metric: flexible_match
+    weight_by_size: True
+  - metric: best_possible
     weight_by_size: True
