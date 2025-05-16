@@ -19,7 +19,11 @@ def process_results(doc: dict, results: List[str]) -> Dict[str, int]:
         )
         box_matches = [match for match in box_matches if match]
         last_boxed_match = box_matches[-1] if box_matches else None
-        exact_match.append(int(int(last_boxed_match) == int(target)))
+        try:
+            match_result = int(int(last_boxed_match) == int(target))
+        except:
+            match_result = 0
+        exact_match.append(match_result)
 
     results = {
         "pass@1": sum(exact_match) / len(exact_match),
