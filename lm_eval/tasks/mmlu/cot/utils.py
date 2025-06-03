@@ -8,9 +8,9 @@ def process_results(doc: dict, results: List[str], lm_eval_result=None) -> Dict[
     candidates = results[0]
     target = "ABCD"[doc["answer"]]
 
-    # # Ignore content before </think> tag, if tag exists.
-    # if "</think>" in candidates:
-    #     candidates = candidates.split("</think>")[-1]
+    # Ignore content before </think> tag, if tag exists.
+    if "</think>" in candidates:
+        candidates = candidates.split("</think>")[-1]
 
     # Strict exact match in box.
     box_matches = re.findall(
@@ -20,6 +20,17 @@ def process_results(doc: dict, results: List[str], lm_eval_result=None) -> Dict[
     box_matches = [match for match in box_matches if match]
     last_boxed_match = box_matches[-1] if box_matches else None
     exact_match = int(last_boxed_match == target)
+
+    # Most strict, all results must be same.
+    box_match = None
+    if box_matches:
+        if all([match == box_matches[0] for match in box_matches]):
+            box_match = box_matches[0]
+        else:
+            # print(f"Response: {results[0][-32:]}")
+            # print(box_matches)
+            pass
+    most_strict = int(box_match == target)
 
     # flexible match
     box_matches = re.findall(
@@ -58,5 +69,6 @@ def process_results(doc: dict, results: List[str], lm_eval_result=None) -> Dict[
         "exact_match": exact_match,
         "flexible_match": flexible_match,
         "best_possible": best_possible,
+        "most_strict": most_strict,
     }
     return results

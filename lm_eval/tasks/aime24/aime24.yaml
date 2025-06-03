@@ -11,14 +11,14 @@ filter_list:
     - name: "repeat_k"
       filter:
         - function: "take_first_k"
-          k: 4
+          k: 32
 generation_kwargs:
   until:
     - "</s>"
   do_sample: true
   temperature: 0.6
   top_p: 0.95
-repeats: 4
+repeats: 32
 num_fewshot: 0
 metric_list:
   - metric: pass@1

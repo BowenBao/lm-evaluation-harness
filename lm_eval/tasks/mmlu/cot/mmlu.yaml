@@ -11,3 +11,5 @@ aggregate_metric_list:
     weight_by_size: True
   - metric: best_possible
     weight_by_size: True
+  - metric: most_strict
+    weight_by_size: True
