@@ -6,13 +6,13 @@ training_split: train
 # Because huggingface dataset only has train split
 validation_split: train
 test_split: null
-doc_to_text: "What is the correct answer to this question:{{Question}}\nChoices:\n(A) {{choice1}}\n(B) {{choice2}}\n(C) {{choice3}}\n(D) {{choice4}}\nLet's think step by step: "
+doc_to_text: "Answer the following multiple choice question. The last line of your response should be in the following format: 'Answer: A/B/C/D' (e.g. 'Answer: A'). \n\n{{Question}}\n\nA) {{choice1}}\nB) {{choice2}}\nC) {{choice3}}\nD) {{choice4}}"
 doc_to_target: answer
 filter_list:
   - name: "strict-match"
     filter:
       - function: "regex"
-        regex_pattern: "(?<=The answer is )(.*)(?=.)"
+        regex_pattern: "(?i)[\\*\\_]{0,2}Answer[\\*\\_]{0,2}\\s*:[\\s\\*\\_]{0,2}\\s*([A-Z])(?![a-zA-Z0-9])"
       - function: "take_first"
   - name: "flexible-extract"
     filter:
